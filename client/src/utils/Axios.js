@@ -6,34 +6,28 @@ const Axios = axios.create({
   withCredentials: true,
 });
 
-//sending access token in the header
+// Add access token
 Axios.interceptors.request.use(
-  async (config) => {
+  (config) => {
     const accessToken = localStorage.getItem("accesstoken");
 
-    // Only add auth header to API calls, not static files
-    if (accessToken && config.url && config.url.startsWith("/api")) {
+    if (accessToken && config.url?.includes("/api/")) {
       config.headers.Authorization = `Bearer ${accessToken}`;
     }
 
     return config;
   },
-  (error) => {
-    return Promise.reject(error);
-  },
+  (error) => Promise.reject(error),
 );
 
-//extend the life span of access token with
-// the help refresh
-Axios.interceptors.request.use(
-  (response) => {
-    return response;
-  },
+// Handle 401 & refresh token
+Axios.interceptors.response.use(
+  (response) => response,
   async (error) => {
-    let originRequest = error.config;
+    const originalRequest = error.config;
 
-    if (error.response.status === 401 && !originRequest.retry) {
-      originRequest.retry = true;
+    if (error.response && error.response.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
 
       const refreshToken = localStorage.getItem("refreshToken");
 
@@ -41,8 +35,8 @@ Axios.interceptors.request.use(
         const newAccessToken = await refreshAccessToken(refreshToken);
 
         if (newAccessToken) {
-          originRequest.headers.Authorization = `Bearer ${newAccessToken}`;
-          return Axios(originRequest);
+          originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+          return Axios(originalRequest);
         }
       }
     }
