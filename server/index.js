@@ -53,6 +53,15 @@ app.use("/api/cart", cartRouter);
 app.use("/api/address", addressRouter);
 app.use("/api/order", orderRouter);
 
-connectDB();
+// Connect DB. If running locally start the server; on Vercel export the app.
+if (process.env.VERCEL) {
+  connectDB();
+} else {
+  connectDB().then(() => {
+    app.listen(PORT, () => {
+      console.log("Server is running", PORT);
+    });
+  });
+}
 
 export default app;
