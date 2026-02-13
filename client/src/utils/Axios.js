@@ -11,7 +11,8 @@ Axios.interceptors.request.use(
     async(config)=>{
         const accessToken = localStorage.getItem('accesstoken')
 
-        if(accessToken){
+        // Only add auth header to API calls, not static files
+        if(accessToken && config.url && config.url.startsWith('/api')){
             config.headers.Authorization = `Bearer ${accessToken}`
         }
 
