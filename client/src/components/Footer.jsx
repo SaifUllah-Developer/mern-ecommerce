@@ -11,7 +11,7 @@ const Footer = () => {
     <footer className="bg-slate-900 text-white">
       {/* Main Footer Content */}
       <div className="container mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-60 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-60 mb-8 ml-10">
           {/* About Section */}
           <div>
             <h3 className="text-lg font-bold mb-4 text-primary-100">Blinkit</h3>
