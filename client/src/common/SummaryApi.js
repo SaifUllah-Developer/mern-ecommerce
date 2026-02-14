@@ -153,6 +153,10 @@ const SummaryApi = {
     url: "/api/order/order-list",
     method: "get",
   },
+  cancelOrder: {
+    url: "/api/order/cancel-order",
+    method: "put",
+  },
 };
 
 export default SummaryApi;
