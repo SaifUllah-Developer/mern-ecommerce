@@ -50,7 +50,7 @@ Product images are uploaded and managed via **Cloudinary**, providing a fast and
 
 ---
 
-🔗 **Live Demo:** [Click here to view on Vercel](https://your-vercel-link.vercel.app)
+🔗 **Live Demo:** [Click here to view on Vercel](https://mern-ecommerce-tau-eosin.vercel.app/)
 
 ## Author
 
