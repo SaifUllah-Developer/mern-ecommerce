@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import NoData from "../components/NoData";
-import SummaryApi, { baseURL } from "../common/SummaryApi";
-import axios from "axios";
+import SummaryApi from "../common/SummaryApi";
+import Axios from "../utils/Axios";
 import toast from "react-hot-toast";
+import AxiosToastError from "../utils/AxiosToastError";
 
 const MyOrders = () => {
   const orders = useSelector((state) => state.orders.order);
@@ -14,13 +15,10 @@ const MyOrders = () => {
   const handleCancelOrder = async (orderId) => {
     try {
       setCancellingOrderId(orderId);
-      const response = await axios.put(
-        baseURL + SummaryApi.cancelOrder.url,
-        { orderId: orderId },
-        {
-          withCredentials: true,
-        },
-      );
+      const response = await Axios({
+        ...SummaryApi.cancelOrder,
+        data: { orderId: orderId },
+      });
 
       if (response.data.success) {
         toast.success(response.data.message);
@@ -32,7 +30,7 @@ const MyOrders = () => {
         toast.error(response.data.message || "Failed to cancel order");
       }
     } catch (error) {
-      toast.error(error.response?.data?.message || "Failed to cancel order");
+      AxiosToastError(error);
       console.error("Cancel order error:", error);
     } finally {
       setCancellingOrderId(null);
