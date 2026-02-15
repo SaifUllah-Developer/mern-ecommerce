@@ -5,6 +5,7 @@ import SummaryApi from "../common/SummaryApi";
 import Axios from "../utils/Axios";
 import toast from "react-hot-toast";
 import AxiosToastError from "../utils/AxiosToastError";
+import { optimizeImage } from "../utils/optimizeImage";
 
 const MyOrders = () => {
   const orders = useSelector((state) => state.orders.order);
@@ -56,9 +57,10 @@ const MyOrders = () => {
                 <p className="font-semibold mb-2">Order No : {order?.orderId}</p>
                 <div className="flex gap-3 mb-3">
                   <img
-                    src={order.product_details.image[0]}
+                    src={optimizeImage(order.product_details.image[0], 150)}
                     className="w-14 h-14 rounded"
                     alt={order.product_details.name}
+                    loading="lazy"
                   />
                   <div>
                     <p className="font-medium">{order.product_details.name}</p>
